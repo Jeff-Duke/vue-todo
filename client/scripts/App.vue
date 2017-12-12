@@ -2,7 +2,12 @@
   <main>
     <section>
       <label> Todo
-        <input v-model="description" placeholder="Enter a Todo" type="text"/>
+        <input
+          v-model="description"
+          placeholder="Enter a Todo"
+          @keyup.enter="addTodo"
+          type="text"
+        />
       </label>
       <button
         @click="addTodo"
@@ -12,9 +17,21 @@
     </section>
     <section class="todo-list">
       <article v-for="todo in todos" class="todo-list__todo" :key="todo.id">
-        <h1>{{todo.description}}</h1>
+        <h1
+          @click="editingTodo = todo"
+          v-show="editingTodo !== todo"
+        >
+          {{todo.description}}
+        </h1>
         <input
-          @click="markTodoComplete(todo.id)" :checked="todo.done"
+          v-show="editingTodo === todo"
+          v-model="todo.description"
+          @blur="doneEditingTodo(todo)"
+          @keyup.enter="doneEditingTodo(todo)"
+          type="text"
+        />
+        <input
+          @click="markTodoComplete(todo)" :checked="todo.done"
           type="checkbox"
         />
         <button @click="deleteTodo(todo.id)">
@@ -32,6 +49,7 @@ export default {
     return {
       todos: [],
       description: '',
+      editingTodo: {},
     };
   },
   mounted: function loadTodosOnMount() {
@@ -64,15 +82,25 @@ export default {
       this.deleteTodoFromServer(id);
     },
 
-    _findTodo(todoId) {
-      const id = parseInt(todoId);
-      return this.todos.find(todo => todo.id === id);
+    _updateTodo(todo) {
+      const i = this.todos.indexOf(todo.id);
+      if (i !== -1) {
+        this.todos[i] = todo;
+      }
+      return null;
     },
 
-    markTodoComplete(todoId) {
-      const todo = this._findTodo(todoId);
+    markTodoComplete(todo) {
       todo.done = !todo.done;
+      this._updateTodo(todo);
 
+      this.updateTodoOnServer(todo);
+    },
+
+    doneEditingTodo(todo) {
+      this.editingTodo = {};
+
+      this._updateTodo(todo);
       this.updateTodoOnServer(todo);
     },
 
