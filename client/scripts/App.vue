@@ -14,6 +14,9 @@
       <article v-for="todo in todos" class="todo-list__todo" :key="todo.id">
         <h1>{{todo.description}}</h1>
         <input type="checkbox" :checked="todo.done">
+        <button @click="deleteTodo(todo.id)">
+          Delete
+        </button>
       </article>
     </section>
   </main>
@@ -47,6 +50,15 @@ export default {
 
       this.todos.push(todo);
       this.storeTodoOnServer(todo);
+      this.description = '';
+    },
+
+    deleteTodo(todoId) {
+      const id = parseInt(todoId);
+
+      this.todos = this.todos.filter(todo => todo.id !== id);
+
+      this.deleteTodoFromServer(id);
     },
 
     storeTodoOnServer(todo) {
@@ -56,6 +68,15 @@ export default {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify(todo),
+      })
+        .then(res => res.json())
+        .then(res => console.log(res))
+        .catch(err => console.error('an error occurred ', err));
+    },
+
+    deleteTodoFromServer(todoId) {
+      fetch(`http://localhost:8004/api/todos/${todoId}`, {
+        method: 'delete',
       })
         .then(res => res.json())
         .then(res => console.log(res))
