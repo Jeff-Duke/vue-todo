@@ -13,7 +13,10 @@
     <section class="todo-list">
       <article v-for="todo in todos" class="todo-list__todo" :key="todo.id">
         <h1>{{todo.description}}</h1>
-        <input type="checkbox" :checked="todo.done">
+        <input
+          @click="markTodoComplete(todo.id)" :checked="todo.done"
+          type="checkbox"
+        />
         <button @click="deleteTodo(todo.id)">
           Delete
         </button>
@@ -61,6 +64,18 @@ export default {
       this.deleteTodoFromServer(id);
     },
 
+    _findTodo(todoId) {
+      const id = parseInt(todoId);
+      return this.todos.find(todo => todo.id === id);
+    },
+
+    markTodoComplete(todoId) {
+      const todo = this._findTodo(todoId);
+      todo.done = !todo.done;
+
+      this.updateTodoOnServer(todo);
+    },
+
     storeTodoOnServer(todo) {
       fetch('http://localhost:8004/api/todos', {
         method: 'post',
@@ -77,6 +92,19 @@ export default {
     deleteTodoFromServer(todoId) {
       fetch(`http://localhost:8004/api/todos/${todoId}`, {
         method: 'delete',
+      })
+        .then(res => res.json())
+        .then(res => console.log(res))
+        .catch(err => console.error('an error occurred ', err));
+    },
+
+    updateTodoOnServer(todo) {
+      fetch(`http://localhost:8004/api/todos/${todo.id}`, {
+        method: 'put',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(todo),
       })
         .then(res => res.json())
         .then(res => console.log(res))
