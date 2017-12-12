@@ -8,7 +8,7 @@ const config = {
   },
   output: {
     filename: 'app.js',
-    path: path.join(__dirname, 'public')
+    path: path.join(__dirname, 'public'),
   },
   devtool: 'source-map',
   module: {
@@ -20,23 +20,44 @@ const config = {
       },
       {
         test: /\.css$/,
-        loader: ['css-hot-loader'].concat(ExtractTextPlugin.extract({
-          fallback: 'style-loader',
-          use: [
-            {
-              loader: 'css-loader',
-              options: {
-                sourceMap: true,
-                modules: true,
-                importLoaders: 1,
-                localIdentName: '[name]__[local]'
-              }
-            },
-            {
-              loader: 'postcss-loader',
-            },
-          ],
-        })),
+        loader: ['css-hot-loader'].concat(
+          ExtractTextPlugin.extract({
+            fallback: 'style-loader',
+            use: [
+              'vue-style-loader',
+              {
+                loader: 'css-loader',
+                options: {
+                  sourceMap: true,
+                  modules: true,
+                  importLoaders: 1,
+                  localIdentName: '[name]__[local]',
+                },
+              },
+              {
+                loader: 'postcss-loader',
+              },
+            ],
+          })
+        ),
+      },
+      {
+        test: /\.vue$/,
+        loader: 'vue-loader',
+        options: {
+          loaders: {
+            // Since sass-loader (weirdly) has SCSS as its default parse mode, we map
+            // the "scss" and "sass" values for the lang attribute to the right configs here.
+            // other preprocessors should work out of the box, no loader config like this necessary.
+            scss: ['vue-style-loader', 'css-loader', 'sass-loader'],
+            sass: [
+              'vue-style-loader',
+              'css-loader',
+              'sass-loader?indentedSyntax',
+            ],
+          },
+          // other vue-loader options go here
+        },
       },
       {
         test: /\.html/,
@@ -58,20 +79,17 @@ const config = {
       filename: 'app.css',
       ignoreOrder: true,
     }),
-    new webpack.HotModuleReplacementPlugin()
+    new webpack.HotModuleReplacementPlugin(),
   ],
   resolve: {
     extensions: ['.css', '.js'],
-    modules: [
-      path.join(__dirname, 'src'),
-      'node_modules',
-    ],
+    modules: [path.join(__dirname, 'src'), 'node_modules'],
   },
   devServer: {
-    contentBase: path.join(__dirname, "public"),
+    contentBase: path.join(__dirname, 'public'),
     hot: true,
     port: 8005,
-  }
+  },
 };
 
 module.exports = config;
