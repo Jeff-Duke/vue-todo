@@ -1,55 +1,36 @@
 <template>
   <main>
-    <section>
-      <label> Todo
-        <input
-          v-model="description"
-          placeholder="Enter a Todo"
-          @keyup.enter="addTodo"
-          type="text"
-        />
-      </label>
-      <button
-        @click="addTodo"
-      >
-        Add Todo
-      </button>
-    </section>
+    <TodoInput
+      @createTodo="addTodo"
+    />
     <section class="todo-list">
-      <article v-for="todo in todos" class="todo-list__todo" :key="todo.id">
-        <h1
-          @click="editingTodo = todo"
-          v-show="editingTodo !== todo"
-        >
-          {{todo.description}}
-        </h1>
-        <input
-          v-show="editingTodo === todo"
-          v-model="todo.description"
-          @blur="doneEditingTodo(todo)"
-          @keyup.enter="doneEditingTodo(todo)"
-          type="text"
+        <Todo
+          v-for="todo in todos"
+          :key="todo.id"
+          :todo="todo"
+          @todoToggled="markTodoComplete(todo)"
+          @remove="deleteTodo(todo)"
+          @todoEdited="doneEditingTodo(todo)"
         />
-        <input
-          @click="markTodoComplete(todo)" :checked="todo.done"
-          type="checkbox"
-        />
-        <button @click="deleteTodo(todo.id)">
-          Delete
-        </button>
       </article>
     </section>
   </main>
 </template>
 
 <script>
+import TodoInput from './TodoInput.vue';
+import Todo from './Todo.vue';
+
 export default {
   name: 'app',
+  components: {
+    TodoInput,
+    Todo,
+  },
   data() {
     return {
       todos: [],
       description: '',
-      editingTodo: {},
     };
   },
   mounted: function loadTodosOnMount() {
@@ -62,20 +43,14 @@ export default {
         .then(data => (this.todos = data));
     },
 
-    addTodo() {
-      const todo = {
-        description: this.description,
-        done: false,
-        id: Date.now(),
-      };
-
+    addTodo(todo) {
       this.todos.push(todo);
       this.storeTodoOnServer(todo);
       this.description = '';
     },
 
-    deleteTodo(todoId) {
-      const id = parseInt(todoId);
+    deleteTodo(todo) {
+      const id = parseInt(todo.id);
 
       this.todos = this.todos.filter(todo => todo.id !== id);
 
