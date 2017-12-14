@@ -1,5 +1,5 @@
 <template>
-  <transition>
+  <transition name='fade'>
     <article class="todo__card">
       <h1
         @click="editing = true"
@@ -73,7 +73,7 @@ export default {
 .todo__card {
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
   transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-  margin: 1rem;
+  margin: 2rem 1rem;
   padding: 2rem;
   position: relative;
 
@@ -138,11 +138,21 @@ export default {
       content: '\f00c';
       color: green;
       font-family: 'FontAwesome';
+      padding-left: 1px;
     }
   }
 
   .btn {
     display: block;
   }
+}
+
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.5s;
+}
+.fade-enter,
+.fade-leave-to {
+  opacity: 0;
 }
 </style>

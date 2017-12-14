@@ -1,9 +1,9 @@
 <template>
   <section class="todo__header">
-    <label> Add a Todo:
+    <label> Add a To-do:
       <input
         v-model="description"
-        placeholder="Todo Description"
+        placeholder="To-do Description"
         @keyup.enter="createTodo"
         type="text"
         class="todo__input"
@@ -15,7 +15,7 @@
       class="btn btn__primary"
       :disabled="!description"
     >
-      Add Todo
+      Add To-do
     </button>
     <h2 v-show="errorMessage" class="todo__error">{{errorMessage}}</h2>
   </section>

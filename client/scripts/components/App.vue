@@ -153,7 +153,7 @@ body {
 }
 
 .todo-list {
-  margin: 0 auto;
+  margin: 2rem auto;
   max-width: 80vw;
 
   @media screen and(max-width: 480px) {
