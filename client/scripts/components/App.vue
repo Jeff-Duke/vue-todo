@@ -111,10 +111,15 @@ export default {
 };
 </script>
 
-<style>
-div {
-  font-size: 2rem;
-  font-weight: bold;
-  font-family: sans-serif;
+<style lang='scss'>
+@import '../../styles/reset.css';
+
+@import url('https://fonts.googleapis.com/css?family=Roboto');
+
+$primary-font: 'Roboto', sans-serif;
+
+body {
+  font-family: $primary-font;
+  font-size: 16px;
 }
 </style>

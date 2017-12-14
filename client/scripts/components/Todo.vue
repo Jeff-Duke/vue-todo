@@ -1,27 +1,29 @@
 <template>
-<article>
-  <h1
-    @click="editing = true"
-    v-show="!editing"
-  >
-    {{todo.description}}
-  </h1>
-  <input
-    v-model="todo.description"
-    v-show="editing"
-    @blur="doneEditing"
-    @keyup.enter="doneEditing"
-    type="text"
-  />
-  <input
-    :checked="todo.done"
-    type="checkbox"
-    @click="toggleTodoComplete"
-  />
-  <button @click="removeTodo">
-    Delete
-  </button>
-</article>
+  <transition>
+    <article>
+      <h1
+        @click="editing = true"
+        v-show="!editing"
+      >
+        {{todo.description}}
+      </h1>
+      <input
+        v-model="todo.description"
+        v-show="editing"
+        @blur="doneEditing"
+        @keyup.enter="doneEditing"
+        type="text"
+      />
+      <input
+        :checked="todo.done"
+        type="checkbox"
+        @click="toggleTodoComplete"
+      />
+      <button @click="removeTodo">
+        Delete
+      </button>
+    </article>
+  </transition>
 </template>
 <script>
 export default {
@@ -49,3 +51,6 @@ export default {
   },
 };
 </script>
+<style lang="scss">
+
+</style>
