@@ -124,7 +124,7 @@ body {
 
 .btn {
   background-color: $color-dark-blue;
-  color: white;
+  color: $color-white;
   font-size: 1.125rem;
   font-weight: 500;
   margin-top: 1rem;
@@ -141,14 +141,23 @@ body {
   &:focus:active {
     box-shadow: none;
     background-color: darken($color-dark-blue, 4%);
-    color: #f38b00;
+    color: $color-orange;
   }
 
   &:disabled {
     background: $color-white;
-    color: #686c6f;
-    border: 1px solid #686c6f;
+    color: $color-dark-gray;
+    border: 1px solid $color-dark-gray;
     pointer-events: none;
+  }
+}
+
+.todo-list {
+  margin: 0 auto;
+  max-width: 80vw;
+
+  @media screen and(max-width: 480px) {
+    max-width: 100vw;
   }
 }
 </style>

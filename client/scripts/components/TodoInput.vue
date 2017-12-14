@@ -7,6 +7,7 @@
         @keyup.enter="createTodo"
         type="text"
         class="todo__input"
+        ref="todo__input"
       />
     </label>
     <button
@@ -29,6 +30,9 @@ export default {
       errorMessage: '',
     };
   },
+  mounted() {
+    this.$refs.todo__input.focus();
+  },
   methods: {
     createTodo() {
       if (this.description === '') {
@@ -43,6 +47,8 @@ export default {
         created: Date.now(),
       };
       this.description = '';
+      this.$refs.todo__input.focus();
+
       this.$emit('createTodo', todo);
     },
   },
@@ -64,11 +70,17 @@ export default {
   }
 
   .todo__input {
+    border-style: solid;
+    border-radius: 3px;
     display: block;
     font-size: 1.125rem;
     font-family: sans-serif;
     margin: 0.5rem 0;
     padding: 0.5rem;
+
+    &::placeholder {
+      font-size: 0.8rem;
+    }
   }
 
   .todo__error {

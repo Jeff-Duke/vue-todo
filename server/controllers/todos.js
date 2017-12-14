@@ -2,12 +2,11 @@ var _ = require('underscore');
 
 module.exports = function(todos) {
   return {
-
     // Gets a list of all the todo items
     getAll: function(req, res) {
       try {
         res.status(200).json(todos);
-      } catch(e) {
+      } catch (e) {
         res.status(500).send('An error occured while attempting to get all of the todo items');
       }
     },
@@ -28,7 +27,7 @@ module.exports = function(todos) {
         } else {
           res.status(statusCode).json(todo);
         }
-      } catch(e) {
+      } catch (e) {
         res.status(statusCode).send(e);
       }
     },
@@ -46,12 +45,12 @@ module.exports = function(todos) {
         var todo = {
           id: id,
           done: req.body.done || false,
-          description: req.body.description
-          created: req.body.created || Date.now();
+          description: req.body.description,
+          created: req.body.created || Date.now(),
         };
         todos.push(todo);
         res.status(statusCode).json(todo);
-      } catch(e) {
+      } catch (e) {
         res.status(statusCode).send(e);
       }
     },
@@ -78,7 +77,7 @@ module.exports = function(todos) {
           });
           res.status(statusCode).json(todo);
         }
-      } catch(e) {
+      } catch (e) {
         res.status(statusCode).send(e);
       }
     },
@@ -100,10 +99,9 @@ module.exports = function(todos) {
           todos.splice(todos.indexOf(todo), 1);
           res.status(statusCode).send(true);
         }
-      } catch(e) {
+      } catch (e) {
         res.status(statusCode).send(e);
       }
-    }
-
+    },
   };
 };
