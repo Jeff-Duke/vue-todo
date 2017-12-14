@@ -69,7 +69,6 @@ export default {
 
   label {
     padding-left: 0.5rem;
-    color: $color-white;
     font-size: 1.125rem;
   }
 
