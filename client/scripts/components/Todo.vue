@@ -9,6 +9,7 @@
       >
         {{todo.description}}
       </h1>
+
       <input
         v-model="todo.description"
         v-show="editing"
@@ -17,19 +18,29 @@
         type="text"
         class="todo__description--editing"
       />
-      <input
-        :checked="todo.done"
-        type="checkbox"
-        @click="toggleTodoComplete"
-        class="todo__complete"
-        :class="{ complete: todo.done}"
-      />
+
+      <label
+        class="todo__complete--label"
+      >
+        <span class="todo__complete--complete" v-if="todo.done">Completed</span>
+        <span class="todo__complete--incomplete" v-if="!todo.done">Incomplete</span>
+
+        <input
+          :checked="todo.done"
+          type="checkbox"
+          @click="toggleTodoComplete"
+          class="todo__complete"
+          :class="{ complete: todo.done }"
+        />
+      </label>
+
       <button
         @click="removeTodo"
         class="btn"
       >
         Delete
       </button>
+
     </article>
   </transition>
 </template>
@@ -88,8 +99,35 @@ export default {
     }
   }
 
-  .todo__complete {
+  .todo__complete--label {
     float: right;
+    padding: 1rem;
+    margin: 1rem;
+    .todo__complete {
+      display: none;
+    }
+
+    .todo__complete--complete {
+      color: $color-gray;
+    }
+
+    .todo__complete--complete::after,
+    .todo__complete--incomplete::after {
+      content: '';
+      display: inline-block;
+      height: 1.125rem;
+      width: 1.125rem;
+      border: 1px solid $color-gray;
+      border-radius: 3px;
+      vertical-align: middle;
+      margin-left: 1rem;
+    }
+
+    .todo__complete--complete::after {
+      content: '\f00c';
+      color: green;
+      font-family: 'FontAwesome';
+    }
   }
 
   .btn {
