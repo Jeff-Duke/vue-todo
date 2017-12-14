@@ -64,6 +64,8 @@ export default {
   align-items: center;
   padding: 2rem;
   flex-direction: column;
+  background-color: $color-light-blue;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
 
   label {
     padding-left: 0.5rem;
@@ -84,7 +86,7 @@ export default {
   }
 
   .todo__error {
-    color: red;
+    color: $color-red;
     font-size: 1.25rem;
     margin-top: 1rem;
   }

@@ -75,6 +75,7 @@ export default {
   transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
   margin: 1rem;
   padding: 2rem;
+  position: relative;
 
   &:hover {
     box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
@@ -103,6 +104,16 @@ export default {
     float: right;
     padding: 1rem;
     margin: 1rem;
+
+    @media screen and(max-width: 480px) {
+      margin: 1rem 0.25rem;
+      padding: 1rem 0.5rem;
+      float: none;
+      position: absolute;
+      right: 0;
+      bottom: 0;
+    }
+
     .todo__complete {
       display: none;
     }
