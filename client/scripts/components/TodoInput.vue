@@ -11,11 +11,12 @@
     </label>
     <button
       @click="createTodo"
-      class="btn"
+      class="btn btn__primary"
       :disabled="!description"
     >
       Add Todo
     </button>
+    <h2 v-show="errorMessage" class="todo__error">{{errorMessage}}</h2>
   </section>
 </template>
 <script>
@@ -25,10 +26,17 @@ export default {
     return {
       description: '',
       todo: {},
+      errorMessage: '',
     };
   },
   methods: {
     createTodo() {
+      if (this.description === '') {
+        this.errorMessage = 'You must enter a description';
+        return null;
+      }
+      this.errorMessage = '';
+
       const todo = {
         description: this.description,
         done: false,
@@ -41,6 +49,8 @@ export default {
 };
 </script>
 <style lang="scss">
+@import '../../styles/_config.scss';
+
 .todo__header {
   min-height: 8rem;
   display: flex;
@@ -61,34 +71,10 @@ export default {
     padding: 0.5rem;
   }
 
-  .btn {
-    background-color: #003b49;
-    color: white;
-    font-size: 1.125rem;
-    font-weight: 500;
+  .todo__error {
+    color: red;
+    font-size: 1.25rem;
     margin-top: 1rem;
-    padding: 0.5rem 1rem;
-    transition: all 0.125s ease;
-
-    &:hover,
-    &:focus {
-      background-color: lighten(#003b49, 10%);
-      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
-    }
-
-    &:active,
-    &:focus:active {
-      box-shadow: none;
-      background-color: darken(#003b49, 10%);
-      color: #f38b00;
-    }
-
-    &:disabled {
-      background: #fff;
-      color: #686c6f;
-      border: 1px solid #686c6f;
-      pointer-events: none;
-    }
   }
 }
 </style>

@@ -115,13 +115,40 @@ export default {
 
 <style lang='scss'>
 @import '../../styles/reset.css';
-
-@import url('https://fonts.googleapis.com/css?family=Roboto');
-
-$primary-font: 'Roboto', sans-serif;
+@import '../../styles/_config.scss';
 
 body {
   font-family: $primary-font;
   font-size: 16px;
+}
+
+.btn {
+  background-color: $color-dark-blue;
+  color: white;
+  font-size: 1.125rem;
+  font-weight: 500;
+  margin-top: 1rem;
+  padding: 0.5rem 1rem;
+  transition: all 0.125s ease;
+
+  &:hover,
+  &:focus {
+    background-color: lighten($color-dark-blue, 10%);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
+  }
+
+  &:active,
+  &:focus:active {
+    box-shadow: none;
+    background-color: darken($color-dark-blue, 4%);
+    color: #f38b00;
+  }
+
+  &:disabled {
+    background: $color-white;
+    color: #686c6f;
+    border: 1px solid #686c6f;
+    pointer-events: none;
+  }
 }
 </style>
