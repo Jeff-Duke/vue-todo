@@ -12,6 +12,7 @@
     <button
       @click="createTodo"
       class="btn"
+      :disabled="!description"
     >
       Add Todo
     </button>
@@ -71,15 +72,22 @@ export default {
 
     &:hover,
     &:focus {
-      background-color: lighten(#003b49, 30%);
+      background-color: lighten(#003b49, 10%);
       box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
     }
 
     &:active,
     &:focus:active {
-      box-shadow: 0;
+      box-shadow: none;
       background-color: darken(#003b49, 10%);
       color: #f38b00;
+    }
+
+    &:disabled {
+      background: #fff;
+      color: #686c6f;
+      border: 1px solid #686c6f;
+      pointer-events: none;
     }
   }
 }
