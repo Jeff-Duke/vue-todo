@@ -47,6 +47,7 @@ module.exports = function(todos) {
           id: id,
           done: req.body.done || false,
           description: req.body.description
+          created: req.body.created || Date.now();
         };
         todos.push(todo);
         res.status(statusCode).json(todo);

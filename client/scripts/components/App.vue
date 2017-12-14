@@ -48,6 +48,8 @@ export default {
     },
 
     addTodo(todo) {
+      todo.id = this.todos.length;
+
       this.todos.push(todo);
       this.storeTodoOnServer(todo);
       this.description = '';

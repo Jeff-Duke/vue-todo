@@ -31,7 +31,7 @@ export default {
       const todo = {
         description: this.description,
         done: false,
-        id: Date.now(),
+        created: Date.now(),
       };
       this.description = '';
       this.$emit('createTodo', todo);
