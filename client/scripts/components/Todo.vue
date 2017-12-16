@@ -1,14 +1,16 @@
 <template>
   <transition name='fade'>
-    <article class="todo__card">
-      <h1
-        @click="editing = true"
+    <article
+      class="todo__card"
+    >
+      <p
+        @click="startEditing"
         v-show="!editing"
         class="todo__description"
         :class="{ 'todo__description--complete': todo.done}"
       >
         {{todo.description}}
-      </h1>
+      </p>
 
       <input
         v-model="todo.description"
@@ -17,6 +19,7 @@
         @keyup.enter="doneEditing"
         type="text"
         class="todo__description--editing"
+        ref="editingDescription"
       />
 
       <label
@@ -58,9 +61,18 @@ export default {
     toggleTodoComplete() {
       this.$emit('todoToggled', this);
     },
+
     removeTodo() {
       this.$emit('remove', this);
     },
+
+    startEditing() {
+      this.editing = true;
+      this.nextTick(() => {
+        this.$refs.editingDescription.focus();
+      });
+    },
+
     doneEditing() {
       this.editing = false;
       this.$emit('todoEdited', this);
@@ -70,11 +82,12 @@ export default {
 </script>
 <style lang="scss">
 @import '../../styles/_config.scss';
+
 .todo__card {
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
   transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
   margin: 2rem 1rem;
-  padding: 2rem;
+  padding: 2.5rem;
   position: relative;
 
   &:hover {
@@ -83,15 +96,15 @@ export default {
 
   .todo__description {
     display: inline-block;
-    margin: 0.125rem;
-    max-width: 85%;
-    line-height: 1.25rem;
+    margin-bottom: 1rem;
+    line-height: 1.5rem;
 
     &--editing {
       display: inline-block;
       font-size: 1rem;
-      padding: 0.125rem;
-      width: 85%;
+      margin-bottom: 1rem;
+      padding: 0.65rem;
+      width: 100%;
     }
 
     &--complete {
@@ -101,17 +114,14 @@ export default {
   }
 
   .todo__complete--label {
-    float: right;
-    padding: 1rem;
     margin: 1rem;
+    padding: 1rem;
+    position: absolute;
+    right: 0.5rem;
+    bottom: 0.5rem;
 
-    @media screen and(max-width: 480px) {
-      margin: 1rem 0.25rem;
-      padding: 1rem 0.5rem;
-      float: none;
-      position: absolute;
+    @media screen and(max-width: 768px) {
       right: 0;
-      bottom: 0;
     }
 
     .todo__complete {
