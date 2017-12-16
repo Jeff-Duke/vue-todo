@@ -2,6 +2,7 @@
   <main>
     <TodoInput
       @createTodo="addTodo"
+      :error="error"
     />
 
     <section class="todo-list">
@@ -22,6 +23,11 @@
 import TodoInput from './TodoInput.vue';
 import Todo from './Todo.vue';
 
+const ERROR_ADDING = 'There was an error adding the to-do to the server';
+const ERROR_UPDATING = 'There was an error while updating the to-do';
+const ERROR_FETCHING = 'There was an error retrieving your to-dos';
+const ERROR_DELETING = 'There was an error while deleting the to-do';
+
 export default {
   name: 'app',
 
@@ -33,6 +39,7 @@ export default {
   data() {
     return {
       todos: [],
+      error: '',
     };
   },
 
@@ -41,16 +48,9 @@ export default {
   },
 
   methods: {
-    fetchTodos() {
-      fetch('http://localhost:8004/api/todos')
-        .then(response => response.json())
-        .then(data => (this.todos = data));
-    },
-
     addTodo(todo) {
       todo.id = this.todos.length;
 
-      this.todos.push(todo);
       this.storeTodoOnServer(todo);
       this.description = '';
     },
@@ -84,6 +84,13 @@ export default {
       this.updateTodoOnServer(todo);
     },
 
+    fetchTodos() {
+      fetch('http://localhost:8004/api/todos')
+        .then(response => response.json())
+        .then(data => (this.todos = data))
+        .catch(err => (this.error = ERROR_FETCHING));
+    },
+
     storeTodoOnServer(todo) {
       fetch('http://localhost:8004/api/todos', {
         method: 'post',
@@ -91,13 +98,21 @@ export default {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify(todo),
-      }).catch(err => console.error('an error occurred ', err));
+      })
+        .catch(err => {
+          this.error = ERROR_ADDING;
+          console.error('an error occurred ', err);
+        })
+        .then(() => this.fetchTodos());
     },
 
     deleteTodoFromServer(todoId) {
       fetch(`http://localhost:8004/api/todos/${todoId}`, {
         method: 'delete',
-      }).catch(err => console.error('an error occurred ', err));
+      }).catch(err => {
+        this.error = ERROR_DELETING;
+        console.error('an error occurred ', err);
+      });
     },
 
     updateTodoOnServer(todo) {
@@ -107,7 +122,10 @@ export default {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify(todo),
-      }).catch(err => console.error('an error occurred ', err));
+      }).catch(err => {
+        this.error = ERROR_UPDATING;
+        console.error('an error occurred ', err);
+      });
     },
   },
 };

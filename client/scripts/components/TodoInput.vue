@@ -23,11 +23,12 @@
 <script>
 export default {
   name: 'TodoInput',
+  props: ['error'],
   data() {
     return {
       description: '',
       todo: {},
-      errorMessage: '',
+      errorMessage: this.error,
     };
   },
   mounted() {
