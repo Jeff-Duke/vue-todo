@@ -67,8 +67,10 @@ export default {
     },
 
     startEditing() {
-      this.editing = true;
-      this.$nextTick(() => this.$refs.editingDescription.focus());
+      if (this.todo.done === false) {
+        this.editing = true;
+        this.$nextTick(() => this.$refs.editingDescription.focus());
+      }
     },
 
     doneEditing() {
