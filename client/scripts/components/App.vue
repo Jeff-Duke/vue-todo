@@ -6,14 +6,29 @@
     />
 
     <section class="todo-list">
+      <label
+        class='todo-list__visibility__label'
+        for="todo-visibility"
+      > Show:
+        <select
+          v-model="visibility" class='todo-list__visibility'
+          id="todo-visibility"
+        >
+          <option default value='all'>All</option>
+          <option value='complete'>Complete</option>
+          <option value='incomplete'>Incomplete</option>
+        </select>
+      </label>
+
       <Todo
-        v-for="todo in todos"
+        v-for="todo in filteredTodos"
         :key="todo.id"
         :todo="todo"
         @todoToggled="markTodoComplete(todo)"
         @remove="deleteTodo(todo)"
         @todoEdited="doneEditingTodo(todo)"
       />
+
     </section>
 
   </main>
@@ -28,6 +43,18 @@ const ERROR_UPDATING = 'There was an error while updating the to-do';
 const ERROR_FETCHING = 'There was an error retrieving your to-dos';
 const ERROR_DELETING = 'There was an error while deleting the to-do';
 
+const filters = {
+  all: function(todos) {
+    return todos;
+  },
+  complete: function(todos) {
+    return todos.filter(todo => todo.done);
+  },
+  incomplete: function(todos) {
+    return todos.filter(todo => !todo.done);
+  },
+};
+
 export default {
   name: 'app',
 
@@ -40,7 +67,14 @@ export default {
     return {
       todos: [],
       error: '',
+      visibility: 'all',
     };
+  },
+
+  computed: {
+    filteredTodos() {
+      return filters[this.visibility](this.todos);
+    },
   },
 
   mounted: function loadTodosOnMount() {
@@ -157,17 +191,29 @@ body {
 
   &:active,
   &:focus:active {
-    box-shadow: none;
     background-color: darken($color-dark-blue, 4%);
+    box-shadow: none;
     color: $color-orange;
   }
 
   &:disabled {
     background: $color-white;
-    color: $color-dark-gray;
     border: 1px solid $color-dark-gray;
+    color: $color-dark-gray;
     pointer-events: none;
   }
+}
+
+.todo-list__visibility {
+  appearance: none;
+  background: url('/assets/chevron-down.png') no-repeat 95%;
+  background-size: 1.125rem;
+  border-radius: 2px;
+  border-style: solid;
+  cursor: pointer;
+  font-size: 1.125rem;
+  margin-left: 1rem;
+  padding: 0.5rem;
 }
 
 .todo-list {

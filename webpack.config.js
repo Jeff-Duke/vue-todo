@@ -47,11 +47,7 @@ const config = {
         options: {
           loaders: {
             scss: ['vue-style-loader', 'css-loader', 'sass-loader'],
-            sass: [
-              'vue-style-loader',
-              'css-loader',
-              'sass-loader?indentedSyntax',
-            ],
+            sass: ['vue-style-loader', 'css-loader', 'sass-loader?indentedSyntax'],
           },
         },
       },
@@ -65,7 +61,7 @@ const config = {
         options: {
           hash: 'sha512',
           digest: 'hex',
-          name: 'images/[name].[ext]',
+          name: 'assets/[name].[ext]',
         },
       },
     ],
@@ -80,6 +76,9 @@ const config = {
   resolve: {
     extensions: ['.css', '.js'],
     modules: [path.join(__dirname, 'src'), 'node_modules'],
+    alias: {
+      assets: path.resolve('client/assets'),
+    },
   },
   devServer: {
     contentBase: path.join(__dirname, 'public'),
