@@ -74,13 +74,14 @@ export default {
   }
 
   .todo__input {
-    border-style: solid;
-    border-radius: 3px;
+    border: 2px solid $color-dark-blue;
+    border-radius: 2px;
     display: block;
     font-size: 1.125rem;
     font-family: sans-serif;
     margin: 0.5rem 0;
     padding: 0.5rem;
+    width: 20rem;
 
     &::placeholder {
       font-size: 0.8rem;
