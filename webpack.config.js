@@ -61,7 +61,7 @@ const config = {
         options: {
           hash: 'sha512',
           digest: 'hex',
-          name: 'assets/[name].[ext]',
+          name: '[name].[ext]',
         },
       },
     ],
@@ -76,9 +76,6 @@ const config = {
   resolve: {
     extensions: ['.css', '.js'],
     modules: [path.join(__dirname, 'src'), 'node_modules'],
-    alias: {
-      assets: path.resolve('client/assets'),
-    },
   },
   devServer: {
     contentBase: path.join(__dirname, 'public'),
