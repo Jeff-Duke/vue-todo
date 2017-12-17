@@ -206,7 +206,7 @@ body {
 
 .todo-list__visibility {
   appearance: none;
-  background: url('/assets/chevron-down.png') no-repeat 95%;
+  background: url('../../assets/chevron-down.png') no-repeat 95%;
   background-size: 1.125rem;
   border-radius: 2px;
   border-style: solid;
@@ -214,6 +214,7 @@ body {
   font-size: 1.125rem;
   margin-left: 1rem;
   padding: 0.5rem;
+  width: 10rem;
 }
 
 .todo-list {
