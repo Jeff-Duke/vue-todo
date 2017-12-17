@@ -206,10 +206,11 @@ body {
 
 .todo-list__visibility {
   appearance: none;
+  background-color: $color-white;
   background: url('../../assets/chevron-down.png') no-repeat 95%;
   background-size: 1.125rem;
+  border: 2px solid $color-gray;
   border-radius: 2px;
-  border-style: solid;
   cursor: pointer;
   font-size: 1.125rem;
   margin-left: 1rem;
