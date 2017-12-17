@@ -6,22 +6,37 @@
     />
 
     <section class="todo-list">
-      <label
-        class='todo-list__visibility__label'
-        for="todo-visibility"
-      > Show:
-        <select
-          v-model="visibility" class='todo-list__visibility'
-          id="todo-visibility"
-        >
-          <option default value='all'>All</option>
-          <option value='complete'>Complete</option>
-          <option value='incomplete'>Incomplete</option>
-        </select>
-      </label>
+      <article class="todo-list__filter-sort">
+        <label
+          class='todo-list__visibility__label'
+          for="todo-visibility"
+        > Show:
+          <select
+            v-model="visibility" class='todo-list__visibility'
+            id="todo-visibility"
+          >
+            <option default value='all'>All</option>
+            <option value='complete'>Complete</option>
+            <option value='incomplete'>Incomplete</option>
+          </select>
+        </label>
+
+        <label
+          class='todo-list__sorted__label'
+          for="todo-sorted"
+        > Sort by:
+          <select
+            v-model="sorted" class='todo-list__sorted'
+            id="todo-sorted"
+          >
+            <option default value='newest'>Newest</option>
+            <option value='oldest'>Oldest</option>
+          </select>
+        </label>
+      </article>
 
       <Todo
-        v-for="todo in filteredTodos"
+        v-for="todo in sortedTodos"
         :key="todo.id"
         :todo="todo"
         @todoToggled="markTodoComplete(todo)"
@@ -68,12 +83,20 @@ export default {
       todos: [],
       error: '',
       visibility: 'all',
+      sorted: 'newest'
     };
   },
 
   computed: {
     filteredTodos() {
       return filters[this.visibility](this.todos);
+    },
+    sortedTodos() {
+      if (this.sorted === 'oldest') {
+        return this.filteredTodos.sort((a, b) => a.created > b.created);
+      } else {
+        return this.filteredTodos.sort((a, b) => a.created < b.created);
+      }
     },
   },
 
@@ -204,7 +227,17 @@ body {
   }
 }
 
-.todo-list__visibility {
+.todo-list__filter-sort {
+  display: flex;
+
+  @media screen and (max-width: 480px) {
+    flex-direction: column;
+    padding-left: 1.5rem;
+  }
+}
+
+.todo-list__visibility,
+.todo-list__sorted {
   appearance: none;
   background-color: $color-white;
   background: url('../../assets/chevron-down.png') no-repeat 95%;
@@ -214,8 +247,20 @@ body {
   cursor: pointer;
   font-size: 1.125rem;
   margin-left: 1rem;
+  margin-top: 1rem;
   padding: 0.5rem;
   width: 10rem;
+
+  @media screen and (max-width: 480px) {
+    margin: 1rem 0 2rem;
+    display: block;
+    width: 95%;
+  }
+
+}
+
+.todo-list__visibility {
+  margin-right: 2rem;
 }
 
 .todo-list {
